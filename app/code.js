@@ -2,6 +2,11 @@ web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
 web3.eth.defaultAccount = web3.eth.accounts[0];
 
+
+web3.eth.getBlockNumber()
+	.then(console.log);
+
+
 ABI = [
 	{
 		"constant": false,
@@ -62,29 +67,6 @@ ABI = [
 		"constant": true,
 		"inputs": [
 			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "voters",
-		"outputs": [
-			{
-				"name": "voted",
-				"type": "bool"
-			},
-			{
-				"name": "vote",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
 				"name": "proposal",
 				"type": "uint256"
 			}
@@ -107,20 +89,6 @@ ABI = [
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "getMydude",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
 		"name": "TopProposal",
 		"outputs": [
 			{
@@ -131,39 +99,31 @@ ABI = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "mydude",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
 	}
 ];
-ADDR = '0x7284892cf13FE9F04114F94a1e5855c40a94779C';
+ADDR = '0xb6730050A6E221791935DDE980051085A2e73e53';
 var contract = new web3.eth.Contract(ABI, ADDR);
 
+console.log(contract);
 
-contract.methods.getProposal(0).call(function (error, result) {
-    $("#displaytext").html(result[0] + result[1]);
-})
-
-
-$('#change').click(function () {
-    const name = $("#name").val();
-    console.log(name);
-    contract.methods.createProposal(name).send({ from: '0x94120fe8b2dd8954b3b4d7c0dbade52b2790125f' });
+$('#create').click(function () {
+	const name = $("#name").val();
+	console.log($("#addrs").val());
+	contract.methods.createProposal(name).send({ from: $("#addrs").val() })
 });
 
 $('#vota').click(function () {
-    const name = $("#prop").val();
-    console.log(name);
-    contract.methods.vote(name).send({ from: '0x2Fe4eAb33CDe230B3b3572E1Aca75fA65F5D0345' });
+	const idprop = $("#prop").val();
+	contract.methods.vote(idprop).send({ from: $("#addrs").val() });
 });
+
+$('#check').click(function () {
+	contract.methods.getProposal($("#prop").val()).call(function (error, result) {
+		console.log(error);
+		if (error == null) {
+			$("#displaytext").html(result[0] + " Votos: " + result[1] + " Stage: " + result[2]);
+		} else {
+			$("#displaytext").html("NOT FOUND");
+		}
+	})
+})
