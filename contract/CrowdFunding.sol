@@ -12,6 +12,7 @@ contract CrowdFunding{
         bool voted;  
         uint vote;   
     }
+    
 
     event voted(address voter, uint proposal);
 
@@ -22,9 +23,7 @@ contract CrowdFunding{
             proposals.push(Proposal({
                 owner:  msg.sender,
                 name: _name,
-                voteGoal: 5,
-                voteCount: 0,
-                stage: Stage.funding
+                voteCount: 0
             }));
     }
     

@@ -109,7 +109,7 @@ ABI = [
 		"type": "event"
 	}
 ];
-ADDR = '0xdC26CFf116099F25Cc27492C6701305b7A44Fb44';
+ADDR = '0x0901ab3829AbEfeB9B5Ad342Fb6af7E3B376A171';
 var contract = new web3.eth.Contract(ABI, ADDR);
 
 
@@ -133,7 +133,15 @@ $(document).ready(function () {
 $('#subir').click(function () {
 	const name = $("#name").val();
 	console.log($("#addrs").val());
-	contract.methods.createProposal(name).send({ from: $("#addrs").val() })
+	contract.methods.createProposal(name).send({ from: $("#addrs").val() }, function (error, result) {
+		if (error == null) {
+			$('#votoexito').show();
+			$('#votomalo').hide();
+		} else {
+			$('#votomalo').show();
+			$('#votoexito').hide();
+		}
+	})
 });
 
 $('#apoyo').click(function () {
@@ -141,8 +149,10 @@ $('#apoyo').click(function () {
 	contract.methods.vote(idprop).send({ from: $("#addrs").val() }, function (error, result) {
 		if (error == null) {
 			$('#votoexito').show();
+			$('#votomalo').hide();
 		} else {
 			$('#votomalo').show();
+			$('#votoexito').hide();
 		}
 	})
 });
