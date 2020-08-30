@@ -1,26 +1,55 @@
 pragma solidity >=0.4.22 <0.7.0;
 
-/**
- * @title Storage
- * @dev Store & retreive value in a variable
- */
-contract Storage {
-
-    uint256 number;
-
-    /**
-     * @dev Store value in variable
-     * @param num value to store
-     */
-    function store(uint256 num) public {
-        number = num;
+contract Ballot {
+   
+    struct Voter {
+        bool voted;  // if true, that person already voted
+        uint vote;   // index of the voted proposal
     }
 
-    /**
-     * @dev Return value 
-     * @return value of 'number'
-     */
-    function retreive() public view returns (uint256){
-        return number;
+    struct Proposal {
+        address owner;
+        string name; 
+        string descr;// short name (up to 32 bytes)
+        uint voteCount; // number of accumulated votes
     }
+
+    mapping(address => Voter) voters;
+
+    Proposal[] proposals;
+    
+    function createProposal(string _name, string _descr) public {
+            proposals.push(Proposal({
+                owner:  msg.sender,
+                name: _name,
+                descr: _descr,
+                voteCount: 0
+            }));
+    }
+    
+    function getProposal( uint proposal) public view returns (string, uint){
+        return (proposals[proposal].name,proposals[proposal].voteCount);
+    }
+    
+    function vote(uint proposal) public{
+        Voter storage sender = voters[msg.sender];
+        require(!sender.voted, "Already voted.");
+        require(proposals[proposal].owner != msg.sender, "Cant vote for own");
+        sender.voted = true;
+        sender.vote = proposal;
+        proposals[proposal].voteCount += 1;
+    }
+
+    function TopProposal() public view
+            returns (uint winningProposal_)
+    {
+        uint winningVoteCount = 0;
+        for (uint p = 0; p < proposals.length; p++) {
+            if (proposals[p].voteCount > winningVoteCount) {
+                winningVoteCount = proposals[p].voteCount;
+                winningProposal_ = p;
+            }
+        }
+    }
+
 }
