@@ -151,6 +151,15 @@ $('#apoyo').click(function () {
 });
 
 $('#checar').click(function () {
+	contract.methods.getVoter().call(function (error, result) {
+		if (error == null) {
+			$("#displaytext").html(result[0] + " Votos: " + result[1]);
+		} else {
+			$("#displaytext").html("NOT FOUND");
+		}
+	})
+
+/*
 	contract.methods.getProposal($("#prop").val()).call(function (error, result) {
 		if (error == null) {
 			$("#displaytext").html(result[0] + " Votos: " + result[1]);
@@ -158,4 +167,5 @@ $('#checar').click(function () {
 			$("#displaytext").html("NOT FOUND");
 		}
 	})
+	*/	
 })
