@@ -86,3 +86,18 @@ body {
     margin: 4px 2px;
     cursor: pointer;
   }
+
+  .img1 {
+      width: 220px;
+      height: 170px;
+  }
+
+  .img3 {
+      width: 300px;
+      height: 190px;
+  }
+
+  .img2 {
+      width: 200px;
+      height: 250 px;  
+  }
