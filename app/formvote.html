@@ -17,7 +17,7 @@
             <p>Bienvenido</p>
         </div>
     </nav>
-    
+
     <div class="cuerpo">
         <div>
             <h2 class="titulo">Apoyar un proyecto</h2>
@@ -34,6 +34,8 @@
             <div class="indicacion form-group">
                 <label for="addrs">Direccion</label>
                 <input type="text" id="addrs" name="addrs" class="form-control"> <br>
+                <button class="boton_index btn" id="checarVoter">Checar</button>
+                <h3 id="displaytextvoter"></h3>
             </div>
             <br><br><br>
 
@@ -44,8 +46,15 @@
             <label for="prop">Numero de Proyecto</label>
             <input type="number" id="prop" class="form-control"> <br>
             <button class="boton_index btn" id="checar">Checar</button>
-            <h2 id="displaytext"></h2>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h3 id="displaytext"></h3>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="alert alert-success" id="votoexito" role="alert">
+                Voto Existoso!!
+            </div>
+
+            <div class="alert alert-danger" id="votomalo" role="alert">
+                Voto No Existoso!!
+            </div>
             <button class="boton_index btn" id="apoyo">Votar</button>
         </div>
     </div>

@@ -24,24 +24,15 @@ ABI = [
 	},
 	{
 		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "proposals",
+		"inputs": [],
+		"name": "getVoter",
 		"outputs": [
 			{
-				"name": "owner",
-				"type": "address"
+				"name": "",
+				"type": "bool"
 			},
 			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "voteCount",
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -92,7 +83,7 @@ ABI = [
 		"name": "TopProposal",
 		"outputs": [
 			{
-				"name": "winningProposal_",
+				"name": "topProposal_",
 				"type": "uint256"
 			}
 		],
@@ -118,7 +109,7 @@ ABI = [
 		"type": "event"
 	}
 ];
-ADDR = '0x7799055db2066b122a8C782d57eCCd7A6bC5Bb72';
+ADDR = '0xdC26CFf116099F25Cc27492C6701305b7A44Fb44';
 var contract = new web3.eth.Contract(ABI, ADDR);
 
 
@@ -147,25 +138,38 @@ $('#subir').click(function () {
 
 $('#apoyo').click(function () {
 	const idprop = $("#prop").val();
-	contract.methods.vote(idprop).send({ from: $("#addrs").val() });
+	contract.methods.vote(idprop).send({ from: $("#addrs").val() }, function (error, result) {
+		if (error == null) {
+			$('#votoexito').show();
+		} else {
+			$('#votomalo').show();
+		}
+	})
+});
+
+$('#checarVoter').click(function () {
+	contract.methods.getVoter().call({ from: $("#addrs").val() }, function (error, result) {
+		if (error == null) {
+			console.log(result);
+			if (result[0]) {
+				$("#displaytextvoter").html(" Votaste por: " + result[1]);
+			} else {
+				$("#displaytextvoter").html("Disponible para votar");
+			}
+		} else {
+			$("#displaytextvoter").html("No Encontrado");
+		}
+	})
 });
 
 $('#checar').click(function () {
 	contract.methods.getVoter().call(function (error, result) {
-		if (error == null) {
-			$("#displaytext").html(result[0] + " Votos: " + result[1]);
-		} else {
-			$("#displaytext").html("NOT FOUND");
-		}
+		contract.methods.getProposal($("#prop").val()).call(function (error, result) {
+			if (error == null) {
+				$("#displaytext").html(result[0] + " Votos: " + result[1]);
+			} else {
+				$("#displaytext").html("NOT FOUND");
+			}
+		})
 	})
-
-/*
-	contract.methods.getProposal($("#prop").val()).call(function (error, result) {
-		if (error == null) {
-			$("#displaytext").html(result[0] + " Votos: " + result[1]);
-		} else {
-			$("#displaytext").html("NOT FOUND");
-		}
-	})
-	*/	
-})
+});
