@@ -73,7 +73,7 @@ body {
     text-decoration:underline;
 }
 
-.boton_index {
+.boton_index, .boton_back {
     background-color: red;
     border: none;
     color: white;
