@@ -23,33 +23,6 @@ ABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "proposals",
-		"outputs": [
-			{
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "voteCount",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -101,27 +74,26 @@ ABI = [
 		"type": "function"
 	}
 ];
-ADDR = '0xb6730050A6E221791935DDE980051085A2e73e53';
+ADDR = '0xF3ecB00649cc470Dc1969Ca231ad908d78e06575';
 var contract = new web3.eth.Contract(ABI, ADDR);
 
 console.log(contract);
 
-$('#create').click(function () {
+$('#subir').click(function () {
 	const name = $("#name").val();
 	console.log($("#addrs").val());
 	contract.methods.createProposal(name).send({ from: $("#addrs").val() })
 });
 
-$('#vota').click(function () {
+$('#apoyo').click(function () {
 	const idprop = $("#prop").val();
 	contract.methods.vote(idprop).send({ from: $("#addrs").val() });
 });
 
-$('#check').click(function () {
+$('#checar').click(function () {
 	contract.methods.getProposal($("#prop").val()).call(function (error, result) {
-		console.log(error);
 		if (error == null) {
-			$("#displaytext").html(result[0] + " Votos: " + result[1] + " Stage: " + result[2]);
+			$("#displaytext").html(result[0] + " Votos: " + result[1]);
 		} else {
 			$("#displaytext").html("NOT FOUND");
 		}

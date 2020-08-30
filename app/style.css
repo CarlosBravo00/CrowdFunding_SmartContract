@@ -46,6 +46,7 @@ body {
     display: flex;
     justify-content: space-evenly;
     flex-grow: 1;
+    margin-top: 10px;
 }
 
 .cuerpo div {
