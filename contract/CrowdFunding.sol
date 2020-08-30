@@ -12,6 +12,8 @@ contract Ballot {
         string name; 
         uint voteCount; 
     }
+    
+    event voted(address voter, uint proposal);
 
     mapping(address => Voter) voters;
 
@@ -35,6 +37,7 @@ contract Ballot {
         require(proposals[proposal].owner != msg.sender, "Cant vote for own Proposal");
         sender.voted = true;
         sender.vote = proposal;
+        emit voted(msg.sender, proposal);
         proposals[proposal].voteCount += 1;
     }
 

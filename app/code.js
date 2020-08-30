@@ -23,6 +23,33 @@ ABI = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proposals",
+		"outputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -72,12 +99,45 @@ ABI = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "proposal",
+				"type": "uint256"
+			}
+		],
+		"name": "voted",
+		"type": "event"
 	}
 ];
-ADDR = '0xF3ecB00649cc470Dc1969Ca231ad908d78e06575';
+ADDR = '0x7799055db2066b122a8C782d57eCCd7A6bC5Bb72';
 var contract = new web3.eth.Contract(ABI, ADDR);
 
-console.log(contract);
+
+
+
+$(document).ready(function () {
+	contract.getPastEvents('voted', {
+		fromBlock: 0,
+		toBlock: 'latest'
+	}, function (error, events) { console.log(events); })
+		.then(function (events) {
+			var list = "";
+			for (i = 0; i < events.length; i++) {
+				console.log(events[i].returnValues[0]);
+				list += "<li class='list-group-item'>" + events[i].returnValues[0] + " Voto por: " + events[i].returnValues[1] + "</li>";
+			}
+			$("#eventList").append(list)
+		});
+});
 
 $('#subir').click(function () {
 	const name = $("#name").val();
