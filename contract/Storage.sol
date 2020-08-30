@@ -1,40 +1,38 @@
 pragma solidity >=0.4.22 <0.7.0;
 
 contract Ballot {
-   
+    
     struct Voter {
-        bool voted;  // if true, that person already voted
-        uint vote;   // index of the voted proposal
+        bool voted;  
+        uint vote;   
     }
 
     struct Proposal {
         address owner;
         string name; 
-        string descr;// short name (up to 32 bytes)
-        uint voteCount; // number of accumulated votes
+        uint voteCount; 
     }
 
     mapping(address => Voter) voters;
 
-    Proposal[] proposals;
+    Proposal[] public proposals;
     
-    function createProposal(string _name, string _descr) public {
+    function createProposal(string _name) public {
             proposals.push(Proposal({
                 owner:  msg.sender,
                 name: _name,
-                descr: _descr,
                 voteCount: 0
             }));
     }
     
-    function getProposal( uint proposal) public view returns (string, uint){
+    function getProposal( uint proposal) public view returns (string , uint){
         return (proposals[proposal].name,proposals[proposal].voteCount);
     }
     
     function vote(uint proposal) public{
         Voter storage sender = voters[msg.sender];
         require(!sender.voted, "Already voted.");
-        require(proposals[proposal].owner != msg.sender, "Cant vote for own");
+        require(proposals[proposal].owner != msg.sender, "Cant vote for own Proposal");
         sender.voted = true;
         sender.vote = proposal;
         proposals[proposal].voteCount += 1;
