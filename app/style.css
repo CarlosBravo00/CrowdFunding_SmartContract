@@ -14,13 +14,12 @@ nav div {
     margin-left: 10px;
     margin-right: 20px;
     padding: 5px;
-    border-radius: 8px;
     color: white;
 }
 
 
 .titulo {
-    font-size: 42px;
+    font-size: 40px;
 }
 
 .indicacion {
